@@ -1,64 +1,89 @@
-# **MSc-Thesis:** On the simulation of GIT-Templates for BSc-Theses
-**Author:** *Benedikt Ehinger*
+# UnfoldSimDashboard
 
-**Supervisor(s):** *Supervisor 1*, *Supervisor 2*
+An interactive dashboard for EEG/ERP simulation and exploration using UnfoldSim.jl and WGLMakie.
 
-**Year:** *2022*
+## Features
 
-## Project Description
->provide a short description of the main goals - just copy from the proposal
+- Multi-channel EEG simulation with HArtMuT head model (227 channels)
+- Interactive ERP component modeling (P100, N170, P300, N400)
+- Custom event variable definitions (categorical and continuous)
+- Multiple model types: Linear, Mixed, Multi-channel
+- Real-time topoplot visualization
+- Configuration save/load functionality
+- Cumulative signal visualization across multiple components
 
-## Zotero Library Path
->Please provide the link to the Zotero group here or include a `Bib`-File in the `report` folder
-
-## Instruction for a new student
->If a fellow student wants to reproduce all your results. What scripts, in which order, with which data need to be run?
->
->Be as specific as possible. Plan to spend **at least 1h** on this.
->
->Optional: Add a pipeline plot in which the different steps are displayed together with the corresponding scripts.
-
-## Overview of Folder Structure 
-
-```
-│projectdir          <- Project's main folder. It is initialized as a Git
-│                       repository with a reasonable .gitignore file.
-│
-├── report           <- **Immutable and add-only!**
-│   ├── proposal     <- Proposal PDF
-│   ├── thesis       <- Final Thesis PDF
-│   ├── talks        <- PDFs (and optionally pptx etc) of the Intro,
-|   |                   Midterm & Final-Talk
-|
-├── _research        <- WIP scripts, code, notes, comments,
-│   |                   to-dos and anything in an alpha state.
-│
-├── plots            <- All exported plots go here, best in date folders.
-|   |                   Note that to ensure reproducibility it is required that all plots can be
-|   |                   recreated using the plotting scripts in the scripts folder.
-|
-├── notebooks        <- Pluto, Jupyter, Weave or any other mixed media notebooks.*
-│
-├── scripts          <- Various scripts, e.g. simulations, plotting, analysis,
-│   │                   The scripts use the `src` folder for their base code.
-│
-├── src              <- Source code for use in this project. Contains functions,
-│                       structures and modules that are used throughout
-│                       the project and in multiple scripts.
-│
-├── test             <- Folder containing tests for `src`.
-│   └── runtests.jl  <- Main test file
-│   └── setup.jl     <- Setup test environment
-│
-├── README.md        <- Top-level README. A fellow student needs to be able to
-|   |                   continue your project. Think about her!!
-|
-├── .gitignore       <- focused on Julia, but some Matlab things as well
-│
-├── (Manifest.toml)  <- Contains full list of exact package versions used currently.
-|── (Project.toml)   <- Main project file, allows activation and installation.
-└── (Requirements.txt)<- in case of python project - can also be an anaconda file, MakeFile etc.
-                        
+## Installation
+```bash
+git clone <repository-url>
+cd UnfoldSimDashboard
+julia --project=. -e 'using Pkg; Pkg.instantiate()'
 ```
 
-\*Instead of having a separate *notebooks* folder, you can also delete it and integrate your notebooks in the scripts folder. However, notebooks should always be marked by adding `nb_` in front of the file name.
+## Usage
+
+Run the dashboard with a single command:
+```bash
+julia run.jl
+```
+
+Or from Julia REPL:
+```julia
+using Pkg
+Pkg.activate(".")
+include("run.jl")
+```
+
+## Project Structure
+```
+UnfoldSimDashboard/
+├── run.jl                          # Entry point - run this!
+├── Project.toml                    # Dependencies
+├── README.md                       # This file
+└── src/
+    ├── app.jl                      # Application assembly
+    ├── types.jl                    # Data structures
+    ├── constants.jl                # Global constants
+    ├── hartmut.jl                  # HArtMuT model integration
+    ├── erp_analysis.jl             # ERP metrics and analysis
+    ├── utils.jl                    # Helper functions
+    ├── io_system.jl                # File I/O operations
+    ├── viz_utils.jl                # Visualization utilities
+    ├── ui_components.jl            # Reusable UI widgets
+    └── components/
+        ├── event_manager.jl        # Event variable management
+        ├── tab_manager.jl          # Component tab system
+        ├── simulation_engine.jl    # Simulation execution
+        ├── main_plot.jl            # Time-series visualization
+        ├── onset_plot.jl           # Onset distribution plot
+        ├── topoplot.jl             # Brain topoplot
+        └── sidebar.jl              # Sidebar UI layout
+```
+
+## Development
+
+### Adding New Features
+
+1. **New UI Component**: Add to `src/components/`
+2. **New Utility Function**: Add to `src/utils.jl`
+3. **New ERP Analysis**: Add to `src/erp_analysis.jl`
+4. **New Constant**: Add to `src/constants.jl`
+
+### Testing Individual Components
+```julia
+# Test event manager
+include("src/types.jl")
+include("src/constants.jl")
+include("src/components/event_manager.jl")
+```
+
+## Dependencies
+
+- Bonito.jl - Web UI framework
+- WGLMakie.jl - GPU-accelerated plotting
+- UnfoldSim.jl - ERP simulation
+- DataFrames.jl - Data manipulation
+- And more (see Project.toml)
+
+## License
+
+[Your License Here]
